@@ -8,7 +8,7 @@ import argparse
 from core.ec2 import Ec2
 from core.volume import Volume
 
-CREDIT = 'ebsant 0.1.0'
+CREDIT = 'ebsant 0.2.0'
 
 def input():
     ''' Get input from command line. '''
