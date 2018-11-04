@@ -38,7 +38,6 @@ for volume in volumes:
     snapshots = volume.get_snapshots(
         Filters=[
             {'Name': 'volume-id', 'Values': [volume.get_id()]},
-            {'Name': 'status', 'Values': ['completed']},
             {'Name': 'tag-key', 'Values': [volume.get_config('target_tag')]}
         ]
     )
