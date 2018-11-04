@@ -7,8 +7,6 @@
 import argparse
 from core.ec2 import Ec2
 from core.volume import Volume
-from core.snapshot import Snapshot
-from pprint import pprint
 
 CREDIT = 'ebsant 0.1.0'
 
@@ -18,15 +16,21 @@ def input():
     parser.add_argument('-r', '--region', dest='region_name', action='store', required=True, help='Region name')
     parser.add_argument('-i', '--id', dest='aws_access_key_id', action='store', required=True, help='Aws access key id')
     parser.add_argument('-k', '--key', dest='aws_secret_access_key', action='store', required=True, help='Aws secret access key')
+    parser.add_argument('-t', '--target-tag', dest='target_tag', action='store', help='Target tag')
     parser.add_argument('-v', action='version', version=CREDIT)
     return parser.parse_args()
 
 # Here we go
 args = input()
 
-Volume._config['target_tag'] = 'ebsant'
+if args.target_tag is not None:
+    Volume._config['target_tag'] = args.target_tag
 
-ec2 = Ec2(**vars(args))
+ec2 = Ec2(
+    region_name=args.region_name,
+    aws_access_key_id=args.aws_access_key_id,
+    aws_secret_access_key=args.aws_secret_access_key,
+)
 volumes = ec2.get_volumes(
     Filters=[
         {'Name': 'tag-key', 'Values': [Volume._config['target_tag']]}
