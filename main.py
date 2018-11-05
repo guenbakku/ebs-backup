@@ -5,6 +5,8 @@
 #
 
 import argparse
+import logging.config
+from logging import getLogger
 from core.ec2 import Ec2
 from core.volume import Volume
 
@@ -25,6 +27,10 @@ args = input()
 
 if args.target_tag is not None:
     Volume._config['target_tag'] = args.target_tag
+
+logging.config.fileConfig("logging.conf")
+logger = getLogger('%s.%s' % (args.region_name, Volume._config['target_tag']))
+logger.info('START')
 
 ec2 = Ec2(
     region_name=args.region_name,
@@ -48,8 +54,10 @@ for volume in volumes:
     for snapshot in snapshots:
         if snapshot.is_expired():
             snapshot.delete()
-            print('Deleted snapshot: %s' % snapshot.get_id())
+            logger.info('Deleted snapshot: %s' % snapshot.get_id())
 
     # Create new snapshot
     snapshot = volume.create_snapshot()
-    print('Took snapshot of volume: %s' % volume.get_id())
+    logger.info('Took snapshot of volume: %s' % volume.get_id())
+
+logger.info('STOP')
