@@ -10,6 +10,14 @@ The value of this tag is the integer declares the number of days to keep old sna
 
 ![](./docs/img/set-target-tag.png)
 
+## Set write permission of log directory
+
+Don't forget to set write permission of log directory (`./logs`) to the user who executes the script
+
+~~~
+$ chmod 777 /path/to/logs
+~~~
+
 ## Comands
 
 1. Execute

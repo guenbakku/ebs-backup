@@ -34,14 +34,5 @@ class Snapshot(object):
         is_expired = keep_seconds >= 0 and now - start_time > keep_seconds
         return is_expired
 
-    def create_tags(self, Tags):
-        ec2 = self._volume._ec2.get_resource()
-        target_tag = self._volume._config['target_tag']
-        ec2.create_tags(
-            Resources=[self.get_id()],
-            Tags=Tags
-        )
-
     def delete(self):
-        ec2 = self._volume._ec2.get_client()
-        ec2.delete_snapshot(SnapshotId=self.get_id())
+        self._raw.delete()
