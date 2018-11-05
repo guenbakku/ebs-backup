@@ -8,7 +8,6 @@ class Volume(object):
 
     _config = {
         'target_tag': 'ebsant',
-        'log': True
     }
 
     def __init__(self, ec2, raw):
@@ -63,11 +62,18 @@ class Volume(object):
         snapshots = ec2.snapshots.filter(Filters=Filters)
         return [Snapshot(self, s) for s in snapshots]
 
-    def take_snapshot(self):
-        ec2 = self._ec2.get_resource()
+    def create_snapshot(self):
         description = self.get_snapshot_description()
-        snapshot = ec2.create_snapshot(
-            VolumeId=self.get_id(),
-            Description=description
+        snapshot = self._raw.create_snapshot(
+            Description=description,
+            TagSpecifications=[
+                {
+                    'ResourceType': 'snapshot',
+                    'Tags': [
+                        {'Key': 'Name', 'Value': self.get_name()},
+                        {'Key': self.get_config('target_tag'), 'Value': 'snapshot'}
+                    ]
+                },
+            ]
         )
         return Snapshot(self, snapshot)

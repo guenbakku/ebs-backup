@@ -50,10 +50,6 @@ for volume in volumes:
             snapshot.delete()
             print('Deleted snapshot: %s' % snapshot.get_id())
 
-    # Take new snapshot
-    snapshot = volume.take_snapshot()
-    snapshot.create_tags([
-        {'Key': 'Name', 'Value': volume.get_name()},
-        {'Key': volume.get_config('target_tag'), 'Value': 'snapshot'}
-    ])
+    # Create new snapshot
+    snapshot = volume.create_snapshot()
     print('Took snapshot of volume: %s' % volume.get_id())
