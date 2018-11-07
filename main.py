@@ -4,6 +4,7 @@
 # ebsant - Take snapshot of AWS EC2's volume
 #
 
+import sys
 import argparse
 import logging.config
 from logging import getLogger
@@ -32,32 +33,37 @@ logging.config.fileConfig("logging.conf")
 logger = getLogger('%s.%s' % (args.region_name, Volume._config['target_tag']))
 logger.info('START')
 
-ec2 = Ec2(
-    region_name=args.region_name,
-    aws_access_key_id=args.aws_access_key_id,
-    aws_secret_access_key=args.aws_secret_access_key,
-)
-volumes = ec2.get_volumes(
-    Filters=[
-        {'Name': 'tag-key', 'Values': [Volume._config['target_tag']]}
-    ]
-)
-
-for volume in volumes:
-    # Delete expired snapshots
-    snapshots = volume.get_snapshots(
+try:
+    raise Exception('Hello')
+    ec2 = Ec2(
+        region_name=args.region_name,
+        aws_access_key_id=args.aws_access_key_id,
+        aws_secret_access_key=args.aws_secret_access_key,
+    )
+    volumes = ec2.get_volumes(
         Filters=[
-            {'Name': 'volume-id', 'Values': [volume.get_id()]},
-            {'Name': 'tag-key', 'Values': [volume.get_config('target_tag')]}
+            {'Name': 'tag-key', 'Values': [Volume._config['target_tag']]}
         ]
     )
-    for snapshot in snapshots:
-        if snapshot.is_expired():
-            snapshot.delete()
-            logger.info('Deleted snapshot: %s' % snapshot.get_id())
 
-    # Create new snapshot
-    snapshot = volume.create_snapshot()
-    logger.info('Took snapshot of volume: %s' % volume.get_id())
+    for volume in volumes:
+        # Delete expired snapshots
+        snapshots = volume.get_snapshots(
+            Filters=[
+                {'Name': 'volume-id', 'Values': [volume.get_id()]},
+                {'Name': 'tag-key', 'Values': [volume.get_config('target_tag')]}
+            ]
+        )
+        for snapshot in snapshots:
+            if snapshot.is_expired():
+                snapshot.delete()
+                logger.info('Deleted snapshot: %s' % snapshot.get_id())
 
-logger.info('STOP')
+        # Create new snapshot
+        snapshot = volume.create_snapshot()
+        logger.info('Took snapshot of volume: %s' % volume.get_id())
+
+    logger.info('STOP')
+except Exception as e:
+    logger.exception(str(e).decode('utf-8'))
+    sys.exit(-1)
