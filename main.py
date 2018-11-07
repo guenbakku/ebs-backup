@@ -21,6 +21,7 @@ def input():
     parser.add_argument('-i', '--id', dest='aws_access_key_id', action='store', required=True, help='Aws access key id')
     parser.add_argument('-k', '--key', dest='aws_secret_access_key', action='store', required=True, help='Aws secret access key')
     parser.add_argument('-t', '--target-tag', dest='target_tag', action='store', help='Target tag')
+    parser.add_argument('-l', '--log', dest='log_path', action='store', help='Log file path')
     parser.add_argument('-v', action='version', version=CREDIT)
     return parser.parse_args()
 
@@ -29,6 +30,10 @@ args = input()
 
 if args.target_tag is not None:
     Volume._config['target_tag'] = args.target_tag
+
+if args.log_path is not None:
+    if 'file' in config.logging['handlers']:
+        config.logging['handlers']['file']['filename'] = args.log_path
 
 logging.config.dictConfig(config.logging)
 logger = getLogger('%s.%s' % (args.region_name, Volume._config['target_tag']))
