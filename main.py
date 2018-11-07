@@ -7,6 +7,7 @@
 import sys
 import argparse
 import logging.config
+import config
 from logging import getLogger
 from core.ec2 import Ec2
 from core.volume import Volume
@@ -29,12 +30,11 @@ args = input()
 if args.target_tag is not None:
     Volume._config['target_tag'] = args.target_tag
 
-logging.config.fileConfig("logging.conf")
+logging.config.dictConfig(config.logging)
 logger = getLogger('%s.%s' % (args.region_name, Volume._config['target_tag']))
 logger.info('START')
 
 try:
-    raise Exception('Hello')
     ec2 = Ec2(
         region_name=args.region_name,
         aws_access_key_id=args.aws_access_key_id,
