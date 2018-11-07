@@ -31,7 +31,7 @@ python /path/to/main.py {option} {value}
 |`-r`, `--region`|Yes|-|AWS region code|
 |`-i`, `--id`|Yes|-|IAM user's AWS_ACCESS_KEY_ID|
 |`-k`, `--key`|Yes|-|IAM user's AWS_SECRET_ACCESS_KEY|
-|`-t`, `--target-tag`|No|'snapee'|Target tag's name|
+|`-t`, `--target-tag`|No|'ebsant'|Target tag's name|
 |`-l`, `--log`|No|'/{path_to_source}/logs/log.txt'|Path to log file|
 |`-h`, `--help`|No|-|Show help|
 |`-v`|No|-|Show credit info|
