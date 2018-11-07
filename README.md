@@ -18,28 +18,20 @@ Don't forget to set write permission of log directory (`./logs`) to the user who
 $ chmod 777 /path/to/logs
 ~~~
 
-## Comands
+## Commands
 
-1. Execute
+~~~
+python /path/to/main.py {option} {value}
+~~~
 
-    ~~~
-    python /path/to/main.py -r {REGION_NAME} -i {AWS_ACCESS_KEY_ID} -k {AWS_SECRET_ACCESS_KEY}
-    ~~~
+### Options
 
-    Change default target tag's name with option `-t` or `--target-tag`
-
-    ~~~
-    python /path/to/main.py -t {CUSTOMIZED_TAG} -r {REGION_NAME} -i {AWS_ACCESS_KEY_ID} -k {AWS_SECRET_ACCESS_KEY}
-    ~~~
-
-2. Show help
-
-    ~~~
-    python /path/to/main.py -h
-    ~~~
-
-3. Show version info
-
-    ~~~
-    python /path/to/main.py -v
-    ~~~
+|Option|Required|Default value|Description|
+|---|---|---|---|
+|`-r`, `--region`|Yes|-|AWS region code|
+|`-i`, `--id`|Yes|-|IAM user's AWS_ACCESS_KEY_ID|
+|`-k`, `--key`|Yes|-|IAM user's AWS_SECRET_ACCESS_KEY|
+|`-t`, `--target-tag`|No|'snapee'|Target tag's name|
+|`-l`, `--log`|No|'/{path_to_source}/logs/log.txt'|Path to log file|
+|`-h`, `--help`|No|-|Show help|
+|`-v`|No|-|Show credit info|
