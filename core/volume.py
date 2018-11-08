@@ -57,9 +57,16 @@ class Volume(object):
             keep_days = 0
         return int(keep_days)
 
-    def get_snapshots(self, Filters):
+    def get_snapshots(self):
         ec2 = self._ec2.get_resource()
-        snapshots = ec2.snapshots.filter(Filters=Filters)
+        snapshots = ec2.snapshots.filter(
+            Filters=[
+                {
+                    'Name': 'tag:'+self.get_config('target_tag'),
+                    'Values': [self.get_id()]
+                }
+            ]
+        )
         return [Snapshot(self, s) for s in snapshots]
 
     def create_snapshot(self):
@@ -71,7 +78,7 @@ class Volume(object):
                     'ResourceType': 'snapshot',
                     'Tags': [
                         {'Key': 'Name', 'Value': self.get_name()},
-                        {'Key': self.get_config('target_tag'), 'Value': 'snapshot'}
+                        {'Key': self.get_config('target_tag'), 'Value': self.get_id()}
                     ]
                 },
             ]

@@ -53,12 +53,7 @@ try:
 
     for volume in volumes:
         # Delete expired snapshots
-        snapshots = volume.get_snapshots(
-            Filters=[
-                {'Name': 'volume-id', 'Values': [volume.get_id()]},
-                {'Name': 'tag-key', 'Values': [volume.get_config('target_tag')]}
-            ]
-        )
+        snapshots = volume.get_snapshots()
         for snapshot in snapshots:
             if snapshot.is_expired():
                 snapshot.delete()
