@@ -2,7 +2,14 @@
 
 Take snapshot of AWS EC2's volume
 
-## Set target volumes
+## Requirements
+
+* Python 2.7 or higher
+* Boto3 library
+
+## Setup steps:
+
+### 1. Set target volumes in AWS console
 
 The script will take snapshot of volumes which have specific tag (default is `ebsant`).
 
@@ -10,21 +17,21 @@ The value of this tag is the integer declares the number of days to keep old sna
 
 ![](./docs/img/set-target-tag.png)
 
-## Set write permission of log directory
+### 2. Set write permission of log directory
 
-Don't forget to set write permission of log directory (`./logs`) to the user who executes the script
-
-~~~
-$ chmod 777 /path/to/logs
-~~~
-
-## Commands
+Don't forget to set write permission of log directory (`./logs`) to the user who executes the script.
 
 ~~~
-python /path/to/main.py {option} {value}
+$ chmod 777 /path/to/source/logs
 ~~~
 
-### Options
+### 3. Execute
+
+~~~
+python /path/to/source/main.py {option} {value}
+~~~
+
+Command options:
 
 |Option|Required|Default value|Description|
 |---|---|---|---|
