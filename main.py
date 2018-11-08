@@ -12,7 +12,7 @@ from logging import getLogger
 from core.ec2 import Ec2
 from core.volume import Volume
 
-CREDIT = 'ebsant 0.4.1'
+CREDIT = 'ebsant 0.5.0'
 
 def input():
     ''' Get input from command line. '''
