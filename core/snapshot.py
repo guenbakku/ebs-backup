@@ -29,9 +29,11 @@ class Snapshot(object):
         '''
         keep_days = self._volume.get_keep_days()
         keep_seconds = keep_days * 86400
+        tolerance_seconds = 60
         now = int(time.time())
         start_time = utils.utc2epoch(self._raw.start_time)
-        is_expired = keep_seconds >= 0 and now - start_time > keep_seconds
+        is_expired = (keep_seconds >= 0 and
+                now - start_time + tolerance_seconds > keep_seconds)
         return is_expired
 
     def delete(self):
