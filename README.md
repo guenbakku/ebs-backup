@@ -2,6 +2,9 @@
 
 Take snapshot of AWS EC2's volume
 
+> **Deprecated**  
+> 03/03/2019: You use AWS managed service [Amazon Data Lifecycle Manager](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/snapshot-lifecycle.html) to handle backup of your EC2's volumes instead.
+
 ## Requirements
 
 * Python 2.7 or higher
